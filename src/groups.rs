@@ -33,7 +33,7 @@ impl std::default::Default for GroupDescriptor {
     }
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub enum EventGroup {
     Section1,
     Section2,
@@ -124,9 +124,10 @@ pub enum EventGroup {
     IJ,
     IJ1,
     IJ2,
+    Range { classes: Vec<Class>, from: String, to: String },
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Class {
     A,
     B,
@@ -230,7 +231,7 @@ impl std::fmt::Display for Language {
 }
 
 impl EventGroup {
-    pub fn matches(&self, class: Class, subgroup: u8, language: Language) -> bool {
+    pub fn matches(&self, name: String, class: Class, subgroup: u8, language: Language) -> bool {
         match self {
             EventGroup::Section1 => [Class::A,Class::B,Class::C,Class::D].contains(&class),
             EventGroup::Section2 => [Class::E,Class::F,Class::G,Class::H].contains(&class),
@@ -320,6 +321,7 @@ impl EventGroup {
             EventGroup::JK1 => (class == Class::J || class == Class::K) && subgroup == 1,
             EventGroup::JK2 => (class == Class::J || class == Class::K) && subgroup == 2,
             EventGroup::FleJK => (class == Class::J || class == Class::K) && language == Language::Fle,
+            EventGroup::Range { classes, from, to } => classes.contains(&class) && &name >= from && &name <= to,
         }
     }
 }
