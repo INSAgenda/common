@@ -321,7 +321,7 @@ impl EventGroup {
             EventGroup::JK1 => (class == Class::J || class == Class::K) && subgroup == 1,
             EventGroup::JK2 => (class == Class::J || class == Class::K) && subgroup == 2,
             EventGroup::FleJK => (class == Class::J || class == Class::K) && language == Language::Fle,
-            EventGroup::Range { classes, from, to } => classes.contains(&class) && name >= from && name <= to,
+            EventGroup::Range { classes, from, to } => classes.contains(&class) && name.to_lowercase() >= from.to_lowercase() && name.to_lowercase() <= to.to_lowercase(),
         }
     }
 }
