@@ -231,7 +231,7 @@ impl std::fmt::Display for Language {
 }
 
 impl EventGroup {
-    pub fn matches(&self, name: String, class: Class, subgroup: u8, language: Language) -> bool {
+    pub fn matches(&self, name: &str, class: Class, subgroup: u8, language: Language) -> bool {
         match self {
             EventGroup::Section1 => [Class::A,Class::B,Class::C,Class::D].contains(&class),
             EventGroup::Section2 => [Class::E,Class::F,Class::G,Class::H].contains(&class),
@@ -321,7 +321,7 @@ impl EventGroup {
             EventGroup::JK1 => (class == Class::J || class == Class::K) && subgroup == 1,
             EventGroup::JK2 => (class == Class::J || class == Class::K) && subgroup == 2,
             EventGroup::FleJK => (class == Class::J || class == Class::K) && language == Language::Fle,
-            EventGroup::Range { classes, from, to } => classes.contains(&class) && &name >= from && &name <= to,
+            EventGroup::Range { classes, from, to } => classes.contains(&class) && name >= from && name <= to,
         }
     }
 }
