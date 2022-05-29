@@ -35,8 +35,11 @@ impl std::default::Default for GroupDescriptor {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub enum EventGroup {
+    Everyone,
     Section1,
     Section2,
+    Esp,
+    All,
     Sib,
     A,
     A1,
@@ -124,7 +127,7 @@ pub enum EventGroup {
     IJ,
     IJ1,
     IJ2,
-    Range { classes: Vec<Class>, from: String, to: String },
+    Range { groups: Vec<EventGroup>, from: String, to: String },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -233,9 +236,12 @@ impl std::fmt::Display for Language {
 impl EventGroup {
     pub fn matches(&self, name: &str, class: Class, subgroup: u8, language: Language) -> bool {
         match self {
+            EventGroup::Everyone => true,
             EventGroup::Section1 => [Class::A,Class::B,Class::C,Class::D].contains(&class),
             EventGroup::Section2 => [Class::E,Class::F,Class::G,Class::H].contains(&class),
             EventGroup::Sib => [Class::I,Class::J,Class::K].contains(&class),
+            EventGroup::All => language == Language::All,
+            EventGroup::Esp => language == Language::Esp,
             EventGroup::A => class == Class::A,
             EventGroup::A1 => class == Class::A && subgroup == 1,
             EventGroup::A2 => class == Class::A && subgroup == 2,
@@ -321,7 +327,14 @@ impl EventGroup {
             EventGroup::JK1 => (class == Class::J || class == Class::K) && subgroup == 1,
             EventGroup::JK2 => (class == Class::J || class == Class::K) && subgroup == 2,
             EventGroup::FleJK => (class == Class::J || class == Class::K) && language == Language::Fle,
-            EventGroup::Range { classes, from, to } => classes.contains(&class) && name.to_lowercase() >= from.to_lowercase() && name.to_lowercase() <= to.to_lowercase(),
+            EventGroup::Range { groups, from, to } => {
+                for group in groups {
+                    if group.matches(name, class, subgroup, language) {
+                        return name.to_lowercase() >= from.to_lowercase() && name.to_lowercase() <= to.to_lowercase();
+                    }
+                }
+                false
+            },
         }
     }
 }
