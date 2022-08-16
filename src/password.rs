@@ -69,7 +69,9 @@ pub fn compact_errors(err: &Vec<InvalidPasswordError>) -> (String, String){
     for e in err {
         let (en, fr) = e.to_error_message();
         en_message.push_str(&en);
+        en_message.push_str("<br>");
         fr_message.push_str(&fr);
+        fr_message.push_str("<br>");
     }
     (en_message, fr_message)
 }
