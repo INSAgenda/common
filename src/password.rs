@@ -8,7 +8,7 @@
     }
     // Check if contain a lowercase and a uppercase letter
     if password == password.to_lowercase() || password == password.to_uppercase() {
-        errors.push(InvalidPasswordError::NoUppercaseOrLowercase);
+        errors.push(InvalidPasswordError::NoUppercaseAndLowercase);
     }
     // Check if contain a number 
     if !password.chars().any(|c| c.is_ascii_digit()) {
