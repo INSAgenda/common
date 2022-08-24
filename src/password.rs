@@ -32,7 +32,7 @@ pub enum InvalidPasswordError {
     TopPassword,
     NoDigit,
     NoSpecialChar,
-    NoUppercaseOrLowercase,
+    NoUppercaseAndLowercase,
 }
 
 impl InvalidPasswordError {
@@ -43,7 +43,7 @@ impl InvalidPasswordError {
                 "The password must be between 10 and 128 characters long".to_string(),
                 "Le mot de passe doit posséder entre 10 et 128 caractères".to_string(),
             ),
-            InvalidPasswordError::NoUppercaseOrLowercase => (
+            InvalidPasswordError::NoUppercaseAndLowercase => (
                 "The password must contain at least one uppercase and one lowercase letter".to_string(),
                 "Le mot de passe doit contenir au moins une lettre majuscule et une lettre minuscule".to_string(),
             ),
