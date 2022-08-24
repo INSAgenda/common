@@ -7,7 +7,7 @@
         errors.push(InvalidPasswordError::PasswordLength);
     }
     // Check if contain a lowercase and a uppercase letter
-    if password == password.to_lowercase(){
+    if password == password.to_lowercase() || password == password.to_uppercase() {
         errors.push(InvalidPasswordError::NoUppercaseOrLowercase);
     }
     // Check if contain a number 
