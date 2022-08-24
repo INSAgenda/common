@@ -86,7 +86,7 @@ mod tests{
             assert!(err.iter().any(|e| matches!(e, InvalidPasswordError::PasswordLength)));
             assert!(err.iter().any(|e| matches!(e, InvalidPasswordError::NoDigit)));
             assert!(err.iter().any(|e| matches!(e, InvalidPasswordError::NoSpecialChar)));
-            assert!(err.iter().any(|e| matches!(e, InvalidPasswordError::NoUppercaseOrLowercase)));
+            assert!(err.iter().any(|e| matches!(e, InvalidPasswordError::NoUppercaseAndLowercase)));
         } else {
             panic!("Password should be too short");
         }
