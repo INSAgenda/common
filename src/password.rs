@@ -41,7 +41,7 @@ impl InvalidPasswordError {
         match self {
             InvalidPasswordError::PasswordLength => (
                 "The password must be between 10 and 128 characters long".to_string(),
-                "Le mot de passe doit être compris entre 10 et 128 caractères".to_string(),
+                "Le mot de passe doit posséder entre 10 et 128 caractères".to_string(),
             ),
             InvalidPasswordError::NoUppercaseOrLowercase => (
                 "The password must contain at least one uppercase and one lowercase letter".to_string(),
