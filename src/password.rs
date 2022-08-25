@@ -19,14 +19,14 @@
         errors.push(InvalidPasswordError::NoSpecialChar);
     }
 
-    if errors.len() > 0 {
+    if errors.len() > 1 || errors[0] == InvalidPasswordError::PasswordLength { 
         Err(errors)
     }else{
         Ok(())
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum InvalidPasswordError {
     PasswordLength,
     TopPassword,
