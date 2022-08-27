@@ -19,7 +19,7 @@
         errors.push(InvalidPasswordError::NoSpecialChar);
     }
 
-    if errors.len() > 1 || errors[0] == InvalidPasswordError::PasswordLength { 
+    if errors.len() > 1 || (!errors.is_empty() && errors[0] == InvalidPasswordError::PasswordLength) { 
         Err(errors)
     }else{
         Ok(())
