@@ -39,6 +39,7 @@ impl std::fmt::Display for Level {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(untagged)]
 pub enum Location {
     Parsed {
         building: Building,
