@@ -108,6 +108,12 @@ impl std::fmt::Display for Class {
     }
 }
 
+impl Class {
+    pub fn list() -> &'static [Class] {
+        &[Class::A, Class::B, Class::C, Class::D, Class::E, Class::F, Class::G, Class::H, Class::I, Class::J, Class::K]
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, PartialOrd, Ord)]
 pub enum Language {
     All,
@@ -148,6 +154,12 @@ impl From<&Language> for &'static str {
 impl std::fmt::Display for Language {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", <&'static str>::from(self))
+    }
+}
+
+impl Language {
+    pub fn list() -> &'static [Language] {
+        &[Language::All, Language::Esp, Language::AllDeb, Language::EspDeb, Language::Fle]
     }
 }
 
