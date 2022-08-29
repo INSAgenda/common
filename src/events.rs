@@ -1,21 +1,20 @@
 use crate::prelude::*;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
-#[serde(tag = "kind", content = "subject")]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub enum EventKind {
-    Td(String),
-    Cm(String),
-    Tp(String),
-    Other(String),
+    Td,
+    Cm,
+    Tp,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Event {
-    #[serde(flatten)]
-    pub kind: EventKind,
-    pub groups: Vec<EventGroup>,
+    pub summary: String,
+    pub kind: Option<EventKind>,
+    pub number: Option<u8>,
     pub teachers: Vec<String>,
-    pub location: Option<crate::location::Location>,
+    pub group: EventGroup,
+    pub location: Option<Location>,
     pub start_unixtime: u64,
     pub end_unixtime: u64,
 }

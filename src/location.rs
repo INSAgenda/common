@@ -4,6 +4,8 @@ use serde::{Serialize, Deserialize};
 pub enum Building {
     DumontDurville,
     Magellan,
+    Bougainville,
+    Darwin,
 }
 
 impl std::fmt::Display for Building {
@@ -11,6 +13,8 @@ impl std::fmt::Display for Building {
         match self {
             Building::DumontDurville => write!(f, "Dumont Durville"),
             Building::Magellan => write!(f, "Magellan"),
+            Building::Bougainville => write!(f, "Bougainville"),
+            Building::Darwin => write!(f, "Darwin"),
         }
     }
 }
@@ -34,16 +38,28 @@ impl std::fmt::Display for Level {
     }
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Location {
-    pub building: Building,
-    pub building_area: char,
-    pub level: Level,
-    pub room_number: u8,
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(untagged)]
+pub enum Location {
+    Parsed {
+        building: Building,
+        building_area: char,
+        level: Level,
+        room_number: u8,
+    },
+    Unparsed(String),
 }
 
 impl std::fmt::Display for Location {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} - {} - {} - {}", self.building, self.building_area, self.level, self.room_number)
+        match self {
+            Location::Parsed {
+                building,
+                building_area,
+                level,
+                room_number,
+            } => write!(f, "{} - {} - {} - {}", building, building_area, level, room_number),
+            Location::Unparsed(s) => write!(f, "{}", s),
+        }
     }
 }
