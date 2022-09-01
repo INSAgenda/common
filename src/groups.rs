@@ -159,7 +159,7 @@ impl std::fmt::Display for Language {
 
 impl Language {
     pub fn list() -> &'static [Language] {
-        &[Language::All, Language::Esp, Language::AllDeb, Language::EspDeb, Language::Fle]
+        &[Language::AllDeb, Language::EspDeb, Language::All, Language::Esp, Language::Fle]
     }
 }
 
