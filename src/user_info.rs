@@ -13,4 +13,7 @@ pub struct UserInfo {
     pub group_desc: GroupDescriptor,
     /// Last colors modification timestamp.
     pub last_colors_mod: i64,
+    /// has password
+    #[serde(default)]
+    pub has_password: bool,
 }
