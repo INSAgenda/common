@@ -17,5 +17,7 @@ pub struct AdRecord {
     pub ty: AdContentType,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub content: Option<String>,
+    pub content_fr: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub content_en: Option<String>,
 }
