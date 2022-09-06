@@ -1,13 +1,13 @@
 use serde::{Serialize, Deserialize};
 use crate::prelude::*;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum AdContentType {
     Text,
     Html,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AdRecord {
     pub title: String,
     pub id: String,
