@@ -23,5 +23,5 @@ pub struct AnnouncementDesc {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub content_en: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub scripts: Option<String>,
+    pub script: Option<String>,
 }
