@@ -127,6 +127,10 @@ impl EventGroup {
         EventGroup::And(vec![EventGroup::Department(department), EventGroup::Class(class)])
     }
 
+    pub fn group(department: Department, group: u8) -> Self {
+        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Group(group)])
+    }
+
     pub fn class_and_tp_group(department: Department, class: Class, tp_group: u8) -> Self {
         EventGroup::And(vec![EventGroup::Department(department), EventGroup::Class(class), EventGroup::TpGroup(tp_group)])
     }
