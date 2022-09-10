@@ -145,8 +145,12 @@ impl EventGroup {
         EventGroup::And(vec![EventGroup::Department(department), EventGroup::Class(class), EventGroup::Language(language)])
     }
 
-    pub fn grouped_language(department: Department, language: Language, language_group: u8) -> Self {
-        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Language(language), EventGroup::Lv2Group(language_group)])
+    pub fn grouped_lv1(department: Department, lv1_group: u8) -> Self {
+        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Lv1Group(lv1_group)])
+    }
+
+    pub fn grouped_lv2(department: Department, language: Language, lv2_group: u8) -> Self {
+        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Language(language), EventGroup::Lv2Group(lv2_group)])
     }
 
     pub fn classes(department: Department, classes: Vec<Class>) -> Self {
