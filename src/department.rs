@@ -155,7 +155,50 @@ impl std::fmt::Display for Department {
 
 impl Department {
     pub fn list() -> &'static [Department] {
-        &[Department::Stpi1, Department::Stpi2]
+        &[
+            Department::Ai2,
+            Department::Ai3,
+            Department::Ai4,
+            Department::Asi5,
+            Department::Cgc3,
+            Department::Cgc4,
+            Department::Cp5,
+            Department::EuromedSic,
+            Department::Ep3,
+            Department::Ep4,
+            Department::Ep5,
+            Department::Gc5,
+            Department::Gcu3,
+            Department::Gcu4,
+            Department::Gm3,
+            Department::Gm4,
+            Department::Gm5,
+            Department::Gpgr3,
+            Department::Gpgr4,
+            Department::Iti3,
+            Department::Iti4,
+            Department::Mic1,
+            Department::Mic2,
+            Department::Meca3,
+            Department::Meca4,
+            Department::Meca5,
+            Department::Mri5,
+            Department::MsEsd,
+            Department::PerfE3,
+            Department::PerfE4,
+            Department::PerfE5,
+            Department::PerfIi3,
+            Department::PerfIi4,
+            Department::PerfIi5,
+            Department::PerfIsp3,
+            Department::PerfIsp4,
+            Department::PerfIsp5,
+            Department::PerfNi3,
+            Department::PerfNi4,
+            Department::PerfNi5,
+            Department::Stpi1,
+            Department::Stpi2,
+        ]
     }
 
     pub fn as_str(&self) -> &'static str {
