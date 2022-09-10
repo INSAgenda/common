@@ -1,5 +1,5 @@
 mod location;
-mod promotion;
+mod department;
 mod prelude;
 mod events;
 mod groups;
