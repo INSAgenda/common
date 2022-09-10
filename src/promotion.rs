@@ -33,3 +33,9 @@ impl std::fmt::Display for Promotion {
         write!(f, "{}", <&'static str>::from(self))
     }
 }
+
+impl Promotion {
+    pub fn list() -> &'static [Promotion] {
+        &[Promotion::Stpi1, Promotion::Stpi2]
+    }
+}
