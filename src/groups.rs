@@ -8,30 +8,42 @@ pub enum GroupDescriptor {
 
 impl GroupDescriptor {
     pub fn new_stpi(department: Department, class: Class, language: Language, tp_group: u8) -> Result<Self, &'static str> {
-        if tp_group != 1 && tp_group != 2 {
-            return Err("tp_group must be 1 or 2");
-        }
-        Ok(GroupDescriptor::Stpi {
+        let group = GroupDescriptor::Stpi {
             department,
             language,
             class,
             tp_group: tp_group as i32,
-        })
+        };
+        group.validate()
     }
 
     pub fn new_iti(department: Department, group: u8, language: Language, language_group: u8) -> Result<Self, &'static str> {
-        if !(1..=4).contains(&group) {
-            return Err("group must be 1, 2, 3 or 4");
-        }
-        if !(1..=4).contains(&language_group) {
-            return Err("language_group must be 1, 2, 3 or 4");
-        }
-        Ok(GroupDescriptor::Iti {
+        let group = GroupDescriptor::Iti {
             department,
             group: group as i32,
             language,
             language_group: language_group as i32,
-        })
+        };
+        group.validate()
+    }
+
+    pub fn validate(self) -> Result<Self, &'static str> {
+        match &self {
+            GroupDescriptor::Stpi { tp_group, .. } => {
+                if *tp_group != 1 && *tp_group != 2 {
+                    return Err("tp_group must be 1 or 2");
+                }
+            }
+            GroupDescriptor::Iti { group, language_group, .. } => {
+                if !(1i32..=4).contains(group) {
+                    return Err("group must be 1, 2, 3 or 4");
+                }
+                if !(1i32..=4).contains(language_group) {
+                    return Err("language_group must be 1, 2, 3 or 4");
+                }
+            }
+        }
+        Ok(self)
     }
 }
 
