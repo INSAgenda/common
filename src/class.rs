@@ -64,4 +64,8 @@ impl Class {
     pub fn list() -> &'static [Class] {
         &[Class::A, Class::B, Class::C, Class::D, Class::E, Class::F, Class::G, Class::H, Class::I, Class::J, Class::K]
     }
+    
+    pub fn as_str(&self) -> &'static str {
+        self.into()
+    }
 }

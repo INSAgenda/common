@@ -47,4 +47,8 @@ impl Language {
     pub fn list() -> &'static [Language] {
         &[Language::AllDeb, Language::EspDeb, Language::All, Language::Esp, Language::Fle]
     }
+    
+    pub fn as_str(&self) -> &'static str {
+        self.into()
+    }
 }

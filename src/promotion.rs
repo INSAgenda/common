@@ -38,4 +38,8 @@ impl Promotion {
     pub fn list() -> &'static [Promotion] {
         &[Promotion::Stpi1, Promotion::Stpi2]
     }
+
+    pub fn as_str(&self) -> &'static str {
+        self.into()
+    }
 }
