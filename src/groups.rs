@@ -3,21 +3,21 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
 pub struct GroupDescriptor {
     pub promotion: Promotion,
-    pub lang: Language,
+    pub language: Language,
     pub class: Class,
-    pub class_half: i32,
+    pub tp_group: i32,
 }
 
 impl GroupDescriptor {
-    pub fn new(promotion: Promotion, class: Class, lang: Language, class_half: u8) -> Result<Self, &'static str> {
-        if class_half != 1 && class_half != 2 {
-            return Err("class_division must be 1 or 2");
+    pub fn new(promotion: Promotion, class: Class, language: Language, tp_group: u8) -> Result<Self, &'static str> {
+        if tp_group != 1 && tp_group != 2 {
+            return Err("tp_group must be 1 or 2");
         }
         Ok(Self {
             promotion,
-            lang,
+            language,
             class,
-            class_half: class_half as i32,
+            tp_group: tp_group as i32,
         })
     }
 }
@@ -26,9 +26,9 @@ impl std::default::Default for GroupDescriptor {
     fn default() -> Self {
         Self {
             promotion: Promotion::Stpi1,
-            lang: Language::All,
+            language: Language::All,
             class: Class::E,
-            class_half: 1,
+            tp_group: 1,
         }
     }
 }
@@ -50,19 +50,19 @@ pub enum EventGroup {
 }
 
 impl EventGroup {
-    pub fn matches(&self, u_promotion: Promotion, u_class: Class, u_tp_group: u8, u_lang: Language, u_email: &str) -> bool {
+    pub fn matches(&self, g: &GroupDescriptor, u_email: &str) -> bool {
         match self {
             EventGroup::Everyone => true,
-            EventGroup::S1 => [Class::A, Class::B, Class::C, Class::D].contains(&u_class),
-            EventGroup::S2 => [Class::E, Class::F, Class::G, Class::H].contains(&u_class),
-            EventGroup::Sib => [Class::I, Class::J, Class::K].contains(&u_class),
-            EventGroup::Promotion(p) => p == &u_promotion,
-            EventGroup::Class(class) => class == &u_class,
-            EventGroup::TpGroup(tp_group) => tp_group == &u_tp_group,
-            EventGroup::Language(lang) => lang == &u_lang,
+            EventGroup::S1 => [Class::A, Class::B, Class::C, Class::D].contains(&g.class),
+            EventGroup::S2 => [Class::E, Class::F, Class::G, Class::H].contains(&g.class),
+            EventGroup::Sib => [Class::I, Class::J, Class::K].contains(&g.class),
+            EventGroup::Promotion(p) => p == &g.promotion,
+            EventGroup::Class(class) => class == &g.class,
+            EventGroup::TpGroup(tp_group) => *tp_group as i32 == g.tp_group,
+            EventGroup::Language(lang) => lang == &g.language,
             EventGroup::And(groups) => {
                 for group in groups {
-                    if !group.matches(u_promotion, u_class, u_tp_group, u_lang, u_email) {
+                    if !group.matches(g, u_email) {
                         return false;
                     }
                 }
@@ -70,7 +70,7 @@ impl EventGroup {
             },
             EventGroup::Or(groups) => {
                 for group in groups {
-                    if group.matches(u_promotion, u_class, u_tp_group, u_lang, u_email) {
+                    if group.matches(g, u_email) {
                         return true;
                     }
                 }
