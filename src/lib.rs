@@ -6,4 +6,6 @@ mod groups;
 mod user_info;
 mod password;
 mod announcements;
+mod class;
+mod language;
 pub use crate::prelude::*;
