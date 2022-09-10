@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
 pub enum GroupDescriptor {
     Stpi { department: Department, language: Language, class: Class, tp_group: i32 },
-    Iti { department: Department, group: i32, language: Language, language_group: i32 },
+    Iti { department: Department, group: i32, language: Language, lv1_group: i32, lv2_group: i32 },
 }
 
 impl GroupDescriptor {
@@ -17,12 +17,13 @@ impl GroupDescriptor {
         group.validate()
     }
 
-    pub fn new_iti(department: Department, group: u8, language: Language, language_group: u8) -> Result<Self, &'static str> {
+    pub fn new_iti(department: Department, group: u8, language: Language, lv1_group: u8, lv2_group: u8) -> Result<Self, &'static str> {
         let group = GroupDescriptor::Iti {
             department,
             group: group as i32,
             language,
-            language_group: language_group as i32,
+            lv1_group: lv1_group as i32,
+            lv2_group: lv2_group as i32,
         };
         group.validate()
     }
@@ -34,11 +35,11 @@ impl GroupDescriptor {
                     return Err("tp_group must be 1 or 2");
                 }
             }
-            GroupDescriptor::Iti { group, language_group, .. } => {
+            GroupDescriptor::Iti { group, lv1_group, lv2_group, .. } => {
                 if !(1i32..=4).contains(group) {
                     return Err("group must be 1, 2, 3 or 4");
                 }
-                if !(1i32..=4).contains(language_group) {
+                if !(1i32..=4).contains(lv1_group) || !(1i32..=4).contains(lv2_group) {
                     return Err("language_group must be 1, 2, 3 or 4");
                 }
             }
@@ -67,7 +68,8 @@ pub enum EventGroup {
     Group(u8),
     TpGroup(u8),
     Language(Language),
-    LanguageGroup(u8),
+    Lv1Group(u8),
+    Lv2Group(u8),
 
     And(Vec<EventGroup>),
     Or(Vec<EventGroup>),
@@ -97,9 +99,13 @@ impl EventGroup {
                 GroupDescriptor::Stpi { language: l, .. } => l == lang,
                 GroupDescriptor::Iti { language: l, .. } => l == lang,
             },
-            EventGroup::LanguageGroup(lang_group) => match g {
+            EventGroup::Lv1Group(lv1_group) => match g {
                 GroupDescriptor::Stpi { .. } => false,
-                GroupDescriptor::Iti { language_group: l, .. } => *l == *lang_group as i32,
+                GroupDescriptor::Iti { lv1_group: l, .. } => *l == *lv1_group as i32,
+            },
+            EventGroup::Lv2Group(lv2_group) => match g {
+                GroupDescriptor::Stpi { .. } => false,
+                GroupDescriptor::Iti { lv2_group: l, .. } => *l == *lv2_group as i32,
             },
             EventGroup::And(groups) => {
                 for group in groups {
@@ -140,7 +146,7 @@ impl EventGroup {
     }
 
     pub fn grouped_language(department: Department, language: Language, language_group: u8) -> Self {
-        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Language(language), EventGroup::LanguageGroup(language_group)])
+        EventGroup::And(vec![EventGroup::Department(department), EventGroup::Language(language), EventGroup::Lv2Group(language_group)])
     }
 
     pub fn classes(department: Department, classes: Vec<Class>) -> Self {
