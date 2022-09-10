@@ -42,8 +42,8 @@ pub enum EventGroup {
 
     Promotion(Promotion),
     Class(Class),
-    ClassAndTpGroup(Class, u8),
-    Lang(Language),
+    TpGroup(u8),
+    Language(Language),
 
     And(Vec<EventGroup>),
     Or(Vec<EventGroup>),
@@ -58,8 +58,8 @@ impl EventGroup {
             EventGroup::Sib => [Class::I, Class::J, Class::K].contains(&u_class),
             EventGroup::Promotion(p) => p == &u_promotion,
             EventGroup::Class(class) => class == &u_class,
-            EventGroup::ClassAndTpGroup(class, tp_group) => class == &u_class && tp_group == &u_tp_group,
-            EventGroup::Lang(lang) => lang == &u_lang,
+            EventGroup::TpGroup(tp_group) => tp_group == &u_tp_group,
+            EventGroup::Language(lang) => lang == &u_lang,
             EventGroup::And(groups) => {
                 for group in groups {
                     if !group.matches(u_promotion, u_class, u_tp_group, u_lang, u_email) {
@@ -77,5 +77,24 @@ impl EventGroup {
                 false
             }
         }
+    }
+}
+
+// Helper shortcut functions
+impl EventGroup {
+    pub fn class(promotion: Promotion, class: Class) -> Self {
+        EventGroup::And(vec![EventGroup::Promotion(promotion), EventGroup::Class(class)])
+    }
+
+    pub fn class_and_tp_group(promotion: Promotion, class: Class, tp_group: u8) -> Self {
+        EventGroup::And(vec![EventGroup::Promotion(promotion), EventGroup::Class(class), EventGroup::TpGroup(tp_group)])
+    }
+
+    pub fn class_and_language(promotion: Promotion, class: Class, language: Language) -> Self {
+        EventGroup::And(vec![EventGroup::Promotion(promotion), EventGroup::Class(class), EventGroup::Language(language)])
+    }
+
+    pub fn classes(promotion: Promotion, classes: Vec<Class>) -> Self {
+        EventGroup::And(vec![EventGroup::Promotion(promotion), EventGroup::Or(classes.into_iter().map(EventGroup::Class).collect())])
     }
 }
