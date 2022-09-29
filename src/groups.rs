@@ -49,7 +49,7 @@ impl GroupDesc {
         self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join(",")
     }
 
-    pub fn read_from_string(&self, s: &str) -> Result<GroupDesc, String> {
+    pub fn read_from_string(s: &str) -> Result<GroupDesc, String> {
         let mut groups = BTreeMap::new();
         for part in s.split(',') {
             let mut parts = part.split('=');
