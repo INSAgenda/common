@@ -70,6 +70,21 @@ impl GroupDesc {
     }
 }
 
+#[cfg(test)]
+impl Default for GroupDesc {
+    fn default() -> Self {
+        GroupDesc {
+            groups: [
+                (String::from("ecole"), String::from("insa-rouen")),
+                (String::from("insa-rouen:department"), String::from("STPI1")),
+                (String::from("insa-rouen:lang"), String::from("ESP")),
+                (String::from("insa-rouen:stpi:class"), String::from("A")),
+                (String::from("insa-rouen:stpi:tp-group"), String::from("1")),
+            ].iter().cloned().collect(),
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum GroupFilter {
     Is { id: String, value: String },
