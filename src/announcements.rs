@@ -13,7 +13,7 @@ pub struct AnnouncementDesc {
     pub id: String,
     pub start_ts: u64,
     pub end_ts: u64,
-    pub target: Option<GroupDescriptor>,
+    pub target: Option<GroupFilter>,
     pub max_impressions: Option<u64>,
     pub closable: bool,
     pub ty: ContentType,
