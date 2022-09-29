@@ -118,7 +118,6 @@ impl GroupDesc {
     }
 }
 
-#[cfg(test)]
 impl Default for GroupDesc {
     fn default() -> Self {
         GroupDesc {
