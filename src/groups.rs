@@ -72,7 +72,10 @@ impl GroupDescriptor {
 
     pub fn read_from_string(s: &str) -> Result<GroupDescriptor, String> {
         let mut groups = BTreeMap::new();
-        for part in s.split('+') {
+        for part in s.trim().split('+') {
+            if part.is_empty() {
+                continue;
+            }
             let mut parts = part.split('=');
             let key = parts.next().ok_or_else(|| format!("invalid group description (missing key): {s}"))?;
             let value = parts.next().ok_or_else(|| format!("invalid group description (missing value): {s}"))?;
@@ -122,7 +125,7 @@ impl Default for GroupDescriptor {
     fn default() -> Self {
         GroupDescriptor {
             groups: [
-                (String::from("ecole"), String::from("insa-rouen")),
+                (String::from("school"), String::from("insa-rouen")),
                 (String::from("insa-rouen:department"), String::from("STPI1")),
                 (String::from("insa-rouen:lang"), String::from("ESP")),
                 (String::from("insa-rouen:stpi:class"), String::from("A")),
