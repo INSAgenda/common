@@ -268,10 +268,10 @@ mod parsing {
 }
 
 impl GroupFilter {
-    pub fn is(id: impl Into<String>, value: impl Into<String>) -> Self {
+    pub fn is(id: impl ToString, value: impl ToString) -> Self {
         GroupFilter::Is {
-            id: id.into(),
-            value: value.into(),
+            id: id.to_string(),
+            value: value.to_string(),
         }
     }
 
