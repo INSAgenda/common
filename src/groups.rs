@@ -19,6 +19,16 @@ pub enum ValidationIssue {
     UnknownGroup { group: String },
 }
 
+impl std::fmt::Display for ValidationIssue {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            ValidationIssue::MissingRequiredGroup { group } => write!(f, "Missing required group {}", group),
+            ValidationIssue::InvalidValue { group, value } => write!(f, "Invalid value for group {}: {}", group, value),
+            ValidationIssue::UnknownGroup { group } => write!(f, "Unknown group {}", group),
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct GroupDesc {
     groups: BTreeMap<String, String>,
