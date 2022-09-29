@@ -1,6 +1,17 @@
 use crate::prelude::*;
 use serde::{Serializer, Deserializer, de::Visitor};
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Group {
+    pub id: String,
+    pub name: String,
+    pub help: String,
+    pub values: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub required_if: Option<GroupFilter>,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct GroupDesc {
     groups: BTreeMap<String, String>,
