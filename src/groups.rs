@@ -12,6 +12,13 @@ pub struct Group {
     pub required_if: Option<GroupFilter>,
 }
 
+#[derive(Clone, Debug)]
+pub enum ValidationIssue {
+    MissingRequiredGroup { group: String },
+    InvalidValue { group: String, value: String },
+    UnknownGroup { group: String },
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct GroupDesc {
     groups: BTreeMap<String, String>,
@@ -75,6 +82,29 @@ impl GroupDesc {
 
     pub fn groups(&self) -> &BTreeMap<String, String> {
         &self.groups
+    }
+
+    pub fn validate(&self, groups: &[Group]) -> Vec<ValidationIssue> {
+        let mut issues = Vec::new();
+        for group in groups {
+            if let Some(required_if) = &group.required_if {
+                if !self.matches(required_if) {
+                    issues.push(ValidationIssue::MissingRequiredGroup { group: group.id.clone() });
+                }
+            }
+            if let Some(value) = self.groups.get(&group.id) {
+                if !group.values.contains(value) {
+                    issues.push(ValidationIssue::InvalidValue { group: group.id.clone(), value: value.clone() });
+                }
+            }
+        }
+        for group in self.groups.keys() {
+            if !groups.iter().any(|g| &g.id == group) {
+                issues.push(ValidationIssue::UnknownGroup { group: group.clone() });
+            }
+        }
+        
+        issues
     }
 }
 
