@@ -296,6 +296,22 @@ impl GroupFilter {
         GroupFilter::Any(vec![left.into(), right.into()])
     }
 
+    pub fn any<T: Into<GroupFilter>>(filters: Vec<T>) -> Self {
+        GroupFilter::Any(filters.into_iter().map(|f| f.into()).collect())
+    }
+
+    pub fn any_values(id: impl ToString, values: Vec<impl ToString>) -> Self {
+        GroupFilter::Any(
+            values
+                .into_iter()
+                .map(|v| GroupFilter::Is {
+                    id: id.to_string(),
+                    value: v.to_string(),
+                })
+                .collect(),
+        )
+    }
+
     fn format_to_string(&self) -> String {
         match self {
             GroupFilter::Is { id, value } => format!("{}={}", id, value),
@@ -306,7 +322,9 @@ impl GroupFilter {
                     s.push_str(&filter.format_to_string());
                     s.push_str(" AND ");
                 }
-                s.truncate(s.len() - 5);
+                if s.len() > 1 {
+                    s.truncate(s.len() - 5);
+                }
                 s.push(')');
                 s
             },
@@ -317,7 +335,9 @@ impl GroupFilter {
                     s.push_str(&filter.format_to_string());
                     s.push_str(" OR ");
                 }
-                s.truncate(s.len() - 4);
+                if s.len() > 1 {
+                    s.truncate(s.len() - 4);
+                }
                 s.push(')');
                 s
             },
