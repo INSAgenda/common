@@ -267,6 +267,15 @@ mod parsing {
     }
 }
 
+impl<T: ToString, U: ToString> From<(T, U)> for GroupFilter {
+    fn from((id, value): (T, U)) -> Self {
+        GroupFilter::Is {
+            id: id.to_string(),
+            value: value.to_string(),
+        }
+    }
+}
+
 impl GroupFilter {
     pub fn is(id: impl ToString, value: impl ToString) -> Self {
         GroupFilter::Is {
@@ -275,16 +284,16 @@ impl GroupFilter {
         }
     }
 
-    pub fn both(left: Self, right: Self) -> Self {
-        GroupFilter::All(vec![left, right])
+    pub fn both(left: impl Into<Self>, right: impl Into<Self>) -> Self {
+        GroupFilter::All(vec![left.into(), right.into()])
     }
 
-    pub fn three(left: Self, middle: Self, right: Self) -> Self {
-        GroupFilter::All(vec![left, middle, right])
+    pub fn three(left: impl Into<Self>, middle: impl Into<Self>, right: impl Into<Self>) -> Self {
+        GroupFilter::All(vec![left.into(), middle.into(), right.into()])
     }
 
-    pub fn either(left: Self, right: Self) -> Self {
-        GroupFilter::Any(vec![left, right])
+    pub fn either(left: impl Into<Self>, right: impl Into<Self>) -> Self {
+        GroupFilter::Any(vec![left.into(), right.into()])
     }
 
     fn format_to_string(&self) -> String {
