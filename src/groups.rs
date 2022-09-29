@@ -30,13 +30,13 @@ impl std::fmt::Display for ValidationIssue {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub struct GroupDesc {
+pub struct GroupDescriptor {
     groups: BTreeMap<String, String>,
 }
 
-impl GroupDesc {
-    pub fn new_with_groups(groups: BTreeMap<String, String>) -> GroupDesc {
-        GroupDesc { groups }
+impl GroupDescriptor {
+    pub fn new_with_groups(groups: BTreeMap<String, String>) -> GroupDescriptor {
+        GroupDescriptor { groups }
     }
 
     pub fn matches(&self, filter: &GroupFilter) -> bool {
@@ -70,7 +70,7 @@ impl GroupDesc {
         self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
     }
 
-    pub fn read_from_string(s: &str) -> Result<GroupDesc, String> {
+    pub fn read_from_string(s: &str) -> Result<GroupDescriptor, String> {
         let mut groups = BTreeMap::new();
         for part in s.split('+') {
             let mut parts = part.split('=');
@@ -87,7 +87,7 @@ impl GroupDesc {
             }
             groups.insert(key.to_string(), value.to_string());
         }
-        Ok(GroupDesc { groups })
+        Ok(GroupDescriptor { groups })
     }
 
     pub fn groups(&self) -> &BTreeMap<String, String> {
@@ -118,9 +118,9 @@ impl GroupDesc {
     }
 }
 
-impl Default for GroupDesc {
+impl Default for GroupDescriptor {
     fn default() -> Self {
-        GroupDesc {
+        GroupDescriptor {
             groups: [
                 (String::from("ecole"), String::from("insa-rouen")),
                 (String::from("insa-rouen:department"), String::from("STPI1")),
