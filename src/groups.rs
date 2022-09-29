@@ -68,6 +68,10 @@ impl GroupDesc {
         }
         Ok(GroupDesc { groups })
     }
+
+    pub fn groups(&self) -> &BTreeMap<String, String> {
+        &self.groups
+    }
 }
 
 #[cfg(test)]
