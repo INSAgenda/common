@@ -192,6 +192,9 @@ mod parsing {
         let mut is_or = false;
         let mut filters = Vec::new();
         loop {
+            if s.starts_with(')') {
+                break;
+            }
             let (ns, filter) = read_filter(s)?;
             filters.push(filter);
             let ns = skip_whitespaces(ns);
@@ -260,6 +263,7 @@ mod parsing {
     #[test]
     fn test() {
         read_whole_as_filter("test=value").unwrap();
+        read_whole_as_filter("()").unwrap();
         read_whole_as_filter("(test=value AND other=value)").unwrap();
         read_whole_as_filter("(test=value OR other=value)").unwrap();
         read_whole_as_filter("(test=value OR (test=value AND other=value))").unwrap();
