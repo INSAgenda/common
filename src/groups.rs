@@ -44,6 +44,30 @@ impl GroupDesc {
             },
         }
     }
+
+    fn format_to_string(&self) -> String {
+        self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join(",")
+    }
+
+    fn read_from_string(&self, s: &str) -> Result<GroupDesc, String> {
+        let mut groups = BTreeMap::new();
+        for part in s.split(',') {
+            let mut parts = part.split('=');
+            let key = parts.next().ok_or_else(|| format!("invalid group description (missing key): {s}"))?;
+            let value = parts.next().ok_or_else(|| format!("invalid group description (missing value): {s}"))?;
+            if parts.next().is_some() {
+                return Err(format!("invalid group description (too many parts): {s}"));
+            }
+            if key.is_empty() || key.chars().any(|c| !c.is_ascii_alphanumeric() && c != ':' && c != '_' && c != '-') {
+                return Err(format!("invalid group description (invalid key): {key:?}"));
+            }
+            if value.is_empty() {
+                return Err(format!("invalid group description (invalid value): {value:?}"));
+            }
+            groups.insert(key.to_string(), value.to_string());
+        }
+        Ok(GroupDesc { groups })
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
