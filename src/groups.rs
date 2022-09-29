@@ -67,12 +67,12 @@ impl GroupDesc {
     }
 
     pub fn format_to_string(&self) -> String {
-        self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join(",")
+        self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
     }
 
     pub fn read_from_string(s: &str) -> Result<GroupDesc, String> {
         let mut groups = BTreeMap::new();
-        for part in s.split(',') {
+        for part in s.split('+') {
             let mut parts = part.split('=');
             let key = parts.next().ok_or_else(|| format!("invalid group description (missing key): {s}"))?;
             let value = parts.next().ok_or_else(|| format!("invalid group description (missing value): {s}"))?;
