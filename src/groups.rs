@@ -268,6 +268,21 @@ mod parsing {
 }
 
 impl GroupFilter {
+    pub fn is(id: impl Into<String>, value: impl Into<String>) -> Self {
+        GroupFilter::Is {
+            id: id.into(),
+            value: value.into(),
+        }
+    }
+
+    pub fn both(left: Self, right: Self) -> Self {
+        GroupFilter::All(vec![left, right])
+    }
+
+    pub fn either(left: Self, right: Self) -> Self {
+        GroupFilter::Any(vec![left, right])
+    }
+
     fn format_to_string(&self) -> String {
         match self {
             GroupFilter::Is { id, value } => format!("{}={}", id, value),
