@@ -279,6 +279,10 @@ impl GroupFilter {
         GroupFilter::All(vec![left, right])
     }
 
+    pub fn three(left: Self, middle: Self, right: Self) -> Self {
+        GroupFilter::All(vec![left, middle, right])
+    }
+
     pub fn either(left: Self, right: Self) -> Self {
         GroupFilter::Any(vec![left, right])
     }
