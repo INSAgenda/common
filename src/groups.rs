@@ -18,6 +18,10 @@ pub struct GroupDesc {
 }
 
 impl GroupDesc {
+    pub fn new_with_groups(groups: BTreeMap<String, String>) -> GroupDesc {
+        GroupDesc { groups }
+    }
+
     pub fn matches(&self, filter: &GroupFilter) -> bool {
         match filter {
             GroupFilter::Is { id, value } => {
