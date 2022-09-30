@@ -102,10 +102,8 @@ impl GroupDescriptor {
     pub fn validate(&self, groups: &[Group]) -> Vec<ValidationIssue> {
         let mut issues = Vec::new();
         for group in groups {
-            if let Some(required_if) = &group.required_if {
-                if self.matches(required_if) && !self.groups.contains_key(&group.id) {
-                    issues.push(ValidationIssue::MissingRequiredGroup { group: group.id.clone() });
-                }
+            if group.required_if.as_ref().map(|ri| self.matches(ri)).unwrap_or(true) && !self.groups.contains_key(&group.id) {
+                issues.push(ValidationIssue::MissingRequiredGroup { group: group.id.clone() });
             }
             if let Some(value) = self.groups.get(&group.id) {
                 if !group.values.iter().any(|(v,_)| v==value) {
