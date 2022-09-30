@@ -6,7 +6,7 @@ pub struct Group {
     pub id: String,
     pub name: String,
     pub help: String,
-    pub values: Vec<String>,
+    pub values: Vec<(String, String)>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub required_if: Option<GroupFilter>,
@@ -70,6 +70,8 @@ impl GroupDescriptor {
         self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
     }
 
+    // school=insa-rouen+insa-rouen:department=STPI1+insa-rouen:lang=ESP+insa-rouen:stpi:class=A+insa-rouen:stpi:tp-group=1
+    // school=insa-rouen+insa-rouen:department=ITI3+insa-rouen:lang=ESP+insa-rouen:iti:group=1+insa-rouen:lv1-group=1+insa-rouen:lv2-group=1
     pub fn read_from_string(s: &str) -> Result<GroupDescriptor, String> {
         let mut groups = BTreeMap::new();
         for part in s.trim().split('+') {
@@ -106,7 +108,7 @@ impl GroupDescriptor {
                 }
             }
             if let Some(value) = self.groups.get(&group.id) {
-                if !group.values.contains(value) {
+                if !group.values.iter().any(|(v,_)| v==value) {
                     issues.push(ValidationIssue::InvalidValue { group: group.id.clone(), value: value.clone() });
                 }
             }
