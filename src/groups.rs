@@ -29,7 +29,7 @@ impl std::fmt::Display for ValidationIssue {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct GroupDescriptor {
     groups: BTreeMap<String, String>,
 }
@@ -354,6 +354,20 @@ impl GroupFilter {
     }
 }
 
+struct StringVisitor;
+impl<'de> Visitor<'de> for StringVisitor {
+    type Value = String;
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        formatter.write_str("a formatted string")
+    }
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E> where E: serde::de::Error {
+        Ok(value.to_string())
+    }
+    fn visit_string<E>(self, value: String) -> Result<Self::Value, E> where E: serde::de::Error {
+        Ok(value)
+    }
+}
+
 impl Serialize for GroupFilter {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
         let formatted = self.format_to_string();
@@ -363,28 +377,26 @@ impl Serialize for GroupFilter {
 
 impl<'de> Deserialize<'de> for GroupFilter {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de> {
-        struct StringVisitor;
-
-        impl<'de> Visitor<'de> for StringVisitor {
-            type Value = String;
-
-            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-                formatter.write_str("a string describing a group filter")
-            }
-
-            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E> where E: serde::de::Error {
-                Ok(value.to_string())
-            }
-
-            fn visit_string<E>(self, value: String) -> Result<Self::Value, E> where E: serde::de::Error {
-                Ok(value)
-            }
-        }
-
         let mut formatted = deserializer.deserialize_string(StringVisitor)?;
         formatted = format!("({formatted})");
         parsing::read_whole_as_filter(&formatted).map_err(|(s, e)| {
-            serde::de::Error::custom(format!("Error while parsing filter {formatted:?} at char {}: {e}", formatted.len() - s.len()))
+            serde::de::Error::custom(format!("Error while parsing group filter {formatted:?} at char {}: {e}", formatted.len() - s.len()))
+        })
+    }
+}
+
+impl Serialize for GroupDescriptor {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+        let formatted = self.format_to_string();
+        serializer.serialize_str(&formatted)
+    }
+}
+
+impl<'de> Deserialize<'de> for GroupDescriptor {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de> {
+        let formatted = deserializer.deserialize_string(StringVisitor)?;
+        GroupDescriptor::read_from_string(&formatted).map_err(|e| {
+            serde::de::Error::custom(format!("Error while parsing group descriptor {formatted:?}: {e}"))
         })
     }
 }
