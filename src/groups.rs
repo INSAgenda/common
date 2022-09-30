@@ -103,7 +103,7 @@ impl GroupDescriptor {
         let mut issues = Vec::new();
         for group in groups {
             if let Some(required_if) = &group.required_if {
-                if !self.matches(required_if) {
+                if self.matches(required_if) {
                     issues.push(ValidationIssue::MissingRequiredGroup { group: group.id.clone() });
                 }
             }
