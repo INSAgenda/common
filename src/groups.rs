@@ -39,6 +39,10 @@ impl GroupDescriptor {
         GroupDescriptor { groups }
     }
 
+    pub fn insert(&mut self, id: String, value: String) {
+        self.groups.insert(id, value);
+    }
+
     pub fn matches(&self, filter: &GroupFilter) -> bool {
         match filter {
             GroupFilter::Is { id, value } => {
