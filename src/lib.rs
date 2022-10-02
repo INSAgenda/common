@@ -1,8 +1,12 @@
 mod location;
 mod prelude;
 mod events;
-mod groups;
 mod user_info;
 mod password;
 mod announcements;
+mod group;
+mod group_descriptor;
+mod group_filter;
+mod group_serde;
+mod group_filter_parsing;
 pub use crate::prelude::*;
