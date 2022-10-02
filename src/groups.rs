@@ -74,8 +74,8 @@ impl GroupDescriptor {
         self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
     }
 
-    // school=insa-rouen+insa-rouen:department=STPI1+insa-rouen:lang=ESP+insa-rouen:stpi:class=A+insa-rouen:stpi:tp-group=1
-    // school=insa-rouen+insa-rouen:department=ITI3+insa-rouen:lang=ESP+insa-rouen:iti:group=1+insa-rouen:lv1-group=1+insa-rouen:lv2-group=1
+    // school=insa-rouen+insa-rouen:department=STPI1+insa-rouen:language=ESP+insa-rouen:stpi:class=A+insa-rouen:stpi:tp-group=1
+    // school=insa-rouen+insa-rouen:department=ITI3+insa-rouen:language=ESP+insa-rouen:iti:group=1+insa-rouen:lv1-group=1+insa-rouen:lv2-group=1
     pub fn read_from_string(s: &str) -> Result<GroupDescriptor, String> {
         let mut groups = BTreeMap::new();
         for part in s.trim().split('+') {
@@ -131,7 +131,7 @@ impl Default for GroupDescriptor {
             groups: [
                 (String::from("school"), String::from("insa-rouen")),
                 (String::from("insa-rouen:department"), String::from("STPI1")),
-                (String::from("insa-rouen:lang"), String::from("ESP")),
+                (String::from("insa-rouen:language"), String::from("ESP")),
                 (String::from("insa-rouen:stpi:class"), String::from("A")),
                 (String::from("insa-rouen:stpi:tp-group"), String::from("1")),
             ].iter().cloned().collect(),
