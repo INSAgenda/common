@@ -1,13 +1,13 @@
 use crate::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct GroupDescriptor {
+pub struct UserGroups {
     pub(crate) groups: BTreeMap<String, String>,
 }
 
-impl GroupDescriptor {
-    pub fn new_with_groups(groups: BTreeMap<String, String>) -> GroupDescriptor {
-        GroupDescriptor { groups }
+impl UserGroups {
+    pub fn new_with_groups(groups: BTreeMap<String, String>) -> UserGroups {
+        UserGroups { groups }
     }
 
     pub fn insert(&mut self, id: String, value: String) {
@@ -45,7 +45,7 @@ impl GroupDescriptor {
         &self.groups
     }
 
-    pub fn validate(&self, groups: &[Group]) -> Vec<ValidationIssue> {
+    pub fn validate(&self, groups: &[GroupDesc]) -> Vec<ValidationIssue> {
         let mut issues = Vec::new();
         for group in groups {
             if group.required_if.as_ref().map(|ri| self.matches(ri)).unwrap_or(true) && !self.groups.contains_key(&group.id) {
@@ -67,9 +67,9 @@ impl GroupDescriptor {
     }
 }
 
-impl Default for GroupDescriptor {
+impl Default for UserGroups {
     fn default() -> Self {
-        GroupDescriptor {
+        UserGroups {
             groups: [
                 (String::from("school"), String::from("insa-rouen")),
                 (String::from("insa-rouen:department"), String::from("STPI1")),

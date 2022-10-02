@@ -49,14 +49,14 @@ impl GroupFilter {
     }
 }
 
-impl GroupDescriptor {
+impl UserGroups {
     pub fn format_to_string(&self) -> String {
         self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
     }
 
     // school=insa-rouen+insa-rouen:department=STPI1+insa-rouen:language=ESP+insa-rouen:stpi:class=A+insa-rouen:stpi:tp-group=1
     // school=insa-rouen+insa-rouen:department=ITI3+insa-rouen:language=ESP+insa-rouen:iti:group=1+insa-rouen:lv1-group=1+insa-rouen:lv2-group=1
-    pub fn read_from_string(s: &str) -> Result<GroupDescriptor, String> {
+    pub fn read_from_string(s: &str) -> Result<UserGroups, String> {
         let mut groups = BTreeMap::new();
         for part in s.trim().split('+') {
             if part.is_empty() {
@@ -76,7 +76,7 @@ impl GroupDescriptor {
             }
             groups.insert(key.to_string(), value.to_string());
         }
-        Ok(GroupDescriptor { groups })
+        Ok(UserGroups { groups })
     }
 }
 
@@ -97,17 +97,17 @@ impl<'de> Deserialize<'de> for GroupFilter {
     }
 }
 
-impl Serialize for GroupDescriptor {
+impl Serialize for UserGroups {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
         let formatted = self.format_to_string();
         serializer.serialize_str(&formatted)
     }
 }
 
-impl<'de> Deserialize<'de> for GroupDescriptor {
+impl<'de> Deserialize<'de> for UserGroups {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de> {
         let formatted = deserializer.deserialize_string(StringVisitor)?;
-        GroupDescriptor::read_from_string(&formatted).map_err(|e| {
+        UserGroups::read_from_string(&formatted).map_err(|e| {
             serde::de::Error::custom(format!("Error while parsing group descriptor {formatted:?}: {e}"))
         })
     }

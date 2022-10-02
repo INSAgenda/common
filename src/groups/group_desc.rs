@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Group {
+pub struct GroupDesc {
     pub id: String,
     pub name: String,
     pub help: String,
