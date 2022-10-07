@@ -15,8 +15,20 @@ impl UserGroups {
     }
 
     pub fn matches(&self, filter: &GroupFilter) -> bool {
+        self.matches_with_name(filter, None)
+    }
+
+    pub fn matches_with_name(&self, filter: &GroupFilter, name: Option<&str>) -> bool {
         match filter {
             GroupFilter::Is { id, value } => {
+                if let Some(name) = name {
+                    if id == "name-after" && name >= value {
+                        return true;
+                    }
+                    if id == "name-before" && name <= value {
+                        return true;
+                    }
+                }
                 if let Some(v) = self.groups.get(id) {
                     return v == value;
                 }
@@ -24,7 +36,7 @@ impl UserGroups {
             },
             GroupFilter::All(filters) => {
                 for filter in filters {
-                    if !self.matches(filter) {
+                    if !self.matches_with_name(filter, name) {
                         return false;
                     }
                 }
@@ -32,7 +44,7 @@ impl UserGroups {
             },
             GroupFilter::Any(filters) => {
                 for filter in filters {
-                    if self.matches(filter) {
+                    if self.matches_with_name(filter, name) {
                         return true;
                     }
                 }
