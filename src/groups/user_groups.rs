@@ -22,11 +22,11 @@ impl UserGroups {
         match filter {
             GroupFilter::Is { id, value } => {
                 if let Some(name) = name {
-                    if id == "name-after" && name >= value {
-                        return true;
+                    if id == "name-after" {
+                        return name >= value;
                     }
-                    if id == "name-before" && name <= value {
-                        return true;
+                    if id == "name-before" {
+                        return name <= value;
                     }
                 }
                 if let Some(v) = self.groups.get(id) {
