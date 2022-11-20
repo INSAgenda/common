@@ -1,8 +1,4 @@
-use std::collections::{HashMap, BTreeMap};
-
-use serde::{Serialize, Deserialize};
-
-use crate::UserGroups;
+use std::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub enum Answer {
