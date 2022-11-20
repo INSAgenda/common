@@ -5,8 +5,9 @@ pub enum Answer {
     Input(String),
     MultipleChoice(Vec<u16>),
     OneChoice(u16),
-    Priority(HashMap<u16, u16>),
+    Priority(Vec<u16>),
     Value(f64),
+    Checkbox(bool),
 }
 
 impl Default for Answer {
@@ -19,8 +20,8 @@ impl Default for Answer {
 #[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Survey {
     pub id: String,
-    pub description: HashMap<[u8; 2], String>,
-    pub questions: HashMap<u16, Question>,
+    pub description: HashMap<String, String>,
+    pub questions: Vec<Question>,
     pub start_ts: i64,
     pub end_ts: i64,
     pub target: UserGroups,
@@ -30,10 +31,11 @@ pub struct Survey {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum PossibleAnswer {
     Input { max_length: u16 },
-    MultipleChoice ( HashMap<u16, (String, String)> ),
-    OneChoice ( HashMap<u16, (String, String)> ),
-    Priority ( HashMap<u16, (String, String)> ),
+    MultipleChoice ( Vec<HashMap<String, String>> ),
+    OneChoice ( Vec<HashMap<String, String>> ),
+    Priority ( Vec<HashMap<String, String>> ),
     Value { min: f64, max: f64, step: f64 },
+    Checkbox,
 }
 
 impl Default for PossibleAnswer {
@@ -44,7 +46,7 @@ impl Default for PossibleAnswer {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Question {
-    pub question: HashMap<[u8; 2], String>,
+    pub question: HashMap<String, String>,
     pub possible_answer: PossibleAnswer,
     pub editable: bool,
 }
@@ -52,7 +54,7 @@ pub struct Question {
 #[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct SurveyAnswers {
     pub id: String,
-    pub answers: HashMap<u16, Answer>,
+    pub answers: Vec<Answer>,
     pub last_mod: i64,
 }
 
@@ -68,7 +70,7 @@ impl Survey {
         Self {
             id,
             description: HashMap::new(),
-            questions,
+            questions: vec![],
             start_ts: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .unwrap()
