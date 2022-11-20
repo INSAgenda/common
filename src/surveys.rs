@@ -1,4 +1,6 @@
-use std::prelude::*;
+use serde::{Serialize, Deserialize};
+
+use crate::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub enum Answer {
@@ -29,16 +31,17 @@ pub struct Survey {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum PossibleAnswer {
-    Input(u16),
-    MultipleChoice(HashMap<u16, (String, String)>),
-    OneChoice(HashMap<u16, (String, String)>),
-    Priority(HashMap<u16, (String, String)>),
+    Input { max_length: u16 },
+    MultipleChoice ( HashMap<u16, (String, String)> ),
+    OneChoice ( HashMap<u16, (String, String)> ),
+    Priority ( HashMap<u16, (String, String)> ),
     Value { min: f64, max: f64, step: f64 },
 }
 
+#[cfg(test)]
 impl Default for PossibleAnswer {
     fn default() -> Self {
-        Self::Input(12)
+        Self::Input { max_length: 12 }
     }
 }
 
@@ -56,24 +59,25 @@ pub struct SurveyAnswers {
     pub last_mod: i64,
 }
 
+#[cfg(test)]
 impl Survey {
     pub fn new(id: String) -> Self {
         let mut questions = HashMap::new();
         questions.insert(0, Question {
             question: (String::from("Question"), String::from("Question")),
-            possible_answer: PossibleAnswer::Input(12),
-            can_edit: true,
+            possible_answer: PossibleAnswer::default(),
+            editable: true,
         });
 
         Self {
             id,
             description: (String::from("Description"), String::from("Description")),
             questions,
-            date_start: std::time::SystemTime::now()
+            start_ts: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .unwrap()
                 .as_secs() as i64,
-            date_end: std::time::SystemTime::now()
+            end_ts: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .unwrap()
                 .as_secs() as i64
