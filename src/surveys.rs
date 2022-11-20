@@ -22,8 +22,8 @@ pub struct Survey {
     pub id: String,
     pub description: (String, String),
     pub questions: HashMap<u16, Question>,
-    pub date_start: i64,
-    pub date_end: i64,
+    pub start_ts: i64,
+    pub end_ts: i64,
     pub target: UserGroups,
 }
 
