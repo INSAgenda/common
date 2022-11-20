@@ -9,6 +9,7 @@ pub enum Answer {
     Value(f64),
 }
 
+#[cfg(test)]
 impl Default for Answer {
     fn default() -> Self {
         Self::Input(String::new())
