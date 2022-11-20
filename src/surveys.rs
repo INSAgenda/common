@@ -46,7 +46,7 @@ impl Default for PossibleAnswer {
 pub struct Question {
     pub question: (String, String),
     pub possible_answer: PossibleAnswer,
-    pub can_edit: bool,
+    pub editable: bool,
 }
 
 #[derive(Serialize, Clone, Debug, PartialEq)]
