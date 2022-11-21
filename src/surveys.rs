@@ -24,7 +24,7 @@ pub struct Survey {
     pub questions: Vec<Question>,
     pub start_ts: i64,
     pub end_ts: i64,
-    pub target: UserGroups,
+    pub target: GroupFilter,
     pub required: bool,
 }
 
@@ -80,9 +80,7 @@ impl Survey {
                 .unwrap()
                 .as_secs() as i64
                 + 10000000000,
-            target: UserGroups::new_with_groups(BTreeMap::from([
-                ("school".to_string(), "insa-rouen".to_string()),
-            ])),
+                target: GroupFilter::Is { id: "school".to_owned(), value: "insa-rouen".to_owned() },
             required: false,
         }
     }
