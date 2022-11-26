@@ -20,6 +20,7 @@ impl Default for Answer {
 #[derive(Serialize, Clone, Debug, PartialEq)]
 pub struct Survey {
     pub id: String,
+    pub title: String,
     pub description: HashMap<String, String>,
     pub questions: Vec<Question>,
     pub start_ts: i64,
@@ -71,6 +72,7 @@ impl Survey {
             id,
             description: HashMap::new(),
             questions: vec![],
+            title: String::new(),
             start_ts: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .unwrap()
