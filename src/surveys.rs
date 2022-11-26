@@ -17,7 +17,7 @@ impl Default for Answer {
 }
     
 
-#[derive(Serialize, Clone, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Survey {
     pub id: String,
     pub title: String,
@@ -52,7 +52,7 @@ pub struct Question {
     pub editable: bool,
 }
 
-#[derive(Serialize, Clone, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct SurveyAnswers {
     pub id: String,
     pub answers: Vec<Answer>,
