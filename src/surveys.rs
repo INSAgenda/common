@@ -32,7 +32,7 @@ pub struct Survey {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum PossibleAnswer {
-    Input { max_length: u16 },
+    Input { placeholder: String, max_length: u16 },
     MultipleChoice ( Vec<HashMap<String, String>> ),
     OneChoice ( Vec<HashMap<String, String>> ),
     Priority ( Vec<HashMap<String, String>> ),
@@ -42,7 +42,10 @@ pub enum PossibleAnswer {
 
 impl Default for PossibleAnswer {
     fn default() -> Self {
-        Self::Input { max_length: 12 }
+        Self::Input { 
+            placeholder: String::from("Enter your answer here"),
+            max_length: 12
+        }
     }
 }
 
