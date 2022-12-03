@@ -37,7 +37,7 @@ pub enum PossibleAnswer {
     OneChoice ( Vec<HashMap<String, String>> ),
     Priority ( Vec<HashMap<String, String>> ),
     Value { min: f64, max: f64, step: f64 },
-    Radio,
+    Radio { default: bool },
 }
 
 impl Default for PossibleAnswer {
