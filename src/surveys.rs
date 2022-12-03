@@ -27,6 +27,7 @@ pub struct Survey {
     pub end_ts: i64,
     pub target: GroupFilter,
     pub required: bool,
+    pub author: i64,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
@@ -84,6 +85,7 @@ impl Survey {
                 + 10000000000,
                 target: GroupFilter::Is { id: "school".to_owned(), value: "insa-rouen".to_owned() },
             required: false,
+            author: 0,
         }
     }
 }
