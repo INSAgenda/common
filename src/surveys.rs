@@ -7,7 +7,7 @@ pub enum Answer {
     OneChoice(u16),
     Priority(Vec<u16>),
     Value(f64),
-    Checkbox(bool),
+    Radio(bool),
 }
 
 impl Default for Answer {
@@ -37,7 +37,7 @@ pub enum PossibleAnswer {
     OneChoice ( Vec<HashMap<String, String>> ),
     Priority ( Vec<HashMap<String, String>> ),
     Value { min: f64, max: f64, step: f64 },
-    Checkbox,
+    Radio,
 }
 
 impl Default for PossibleAnswer {
