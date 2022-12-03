@@ -22,7 +22,7 @@ pub struct Survey {
     pub id: String,
     pub title: String,
     pub description: HashMap<String, String>,
-    pub questions: Vec<Question>,
+    pub questions: Vec<SurveyQuestion>,
     pub start_ts: i64,
     pub end_ts: i64,
     pub target: GroupFilter,
@@ -50,7 +50,7 @@ impl Default for PossibleAnswer {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
-pub struct Question {
+pub struct SurveyQuestion {
     pub question: HashMap<String, String>,
     pub possible_answer: PossibleAnswer,
     pub editable: bool,
@@ -66,7 +66,7 @@ pub struct SurveyAnswers {
 impl Survey {
     pub fn new(id: String) -> Self {
         let mut questions = HashMap::new();
-        questions.insert(0, Question {
+        questions.insert(0, SurveyQuestion {
             possible_answer: PossibleAnswer::default(),
             editable: true,
             question: HashMap::new(),
