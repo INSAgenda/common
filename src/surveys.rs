@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub enum Answer {
     Input(String),
-    MultipleChoice(Vec<u16>),
+    Select(Vec<u16>),
     OneChoice(u16),
     Priority(Vec<u16>),
     Value(f64),
@@ -33,7 +33,7 @@ pub struct Survey {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum PossibleAnswer {
     Input { placeholder: String, max_length: u16 },
-    MultipleChoice ( Vec<HashMap<String, String>> ),
+    Select ( Vec<HashMap<String, String>> ),
     OneChoice ( Vec<HashMap<String, String>> ),
     Priority ( Vec<HashMap<String, String>> ),
     Value { min: f64, max: f64, step: f64 },
