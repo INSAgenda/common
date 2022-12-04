@@ -33,10 +33,10 @@ pub struct Survey {
 pub enum PossibleAnswer {
     Input { placeholder: String, max_length: u16 },
     Select ( Vec<HashMap<String, String>> ),
-    OneChoice ( Vec<HashMap<String, String>> ),
+    Radio ( Vec<HashMap<String, String>> ),
     Priority ( Vec<HashMap<String, String>> ),
     Value { min: f64, max: f64, step: f64 },
-    Radio { default: bool },
+    Boolean { default: bool },
 }
 
 impl Default for PossibleAnswer {
