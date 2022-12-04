@@ -54,12 +54,13 @@ pub struct SurveyQuestion {
     pub question: HashMap<String, String>,
     pub possible_answer: PossibleAnswer,
     pub editable: bool,
+    pub required: bool,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct SurveyAnswers {
     pub id: String,
-    pub answers: Vec<Answer>,
+    pub answers: Vec<Option<Answer>>,
     pub last_mod: i64,
 }
 
@@ -70,6 +71,7 @@ impl Survey {
             possible_answer: PossibleAnswer::default(),
             editable: true,
             question: HashMap::new(),
+            required: true,
         });
 
         Self {
