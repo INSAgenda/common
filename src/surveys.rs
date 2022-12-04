@@ -4,10 +4,10 @@ use crate::prelude::*;
 pub enum Answer {
     Input(String),
     Select(Vec<u16>),
-    OneChoice(u16),
+    Radio(u16),
     Priority(Vec<u16>),
     Value(f64),
-    Radio(bool),
+    Boolean(bool),
 }
 
 impl Default for Answer {
