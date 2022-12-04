@@ -15,7 +15,6 @@ impl Default for Answer {
         Self::Input(String::new())
     }
 }
-    
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Survey {
@@ -53,7 +52,6 @@ impl Default for PossibleAnswer {
 pub struct SurveyQuestion {
     pub question: HashMap<String, String>,
     pub possible_answer: PossibleAnswer,
-    pub editable: bool,
     pub required: bool,
 }
 
@@ -69,7 +67,6 @@ impl Survey {
         let mut questions = HashMap::new();
         questions.insert(0, SurveyQuestion {
             possible_answer: PossibleAnswer::default(),
-            editable: true,
             question: HashMap::new(),
             required: true,
         });
