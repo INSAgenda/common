@@ -83,7 +83,7 @@ impl UserGroups {
     }
 
     pub fn needs_correction(&self, groups: &[GroupDesc]) -> bool {
-        let issues = self.validate(&groups);
+        let issues = self.validate(groups);
         for issue in issues {
             match issue {
                 ValidationIssue::MissingRequiredGroup { group: _ } => return true,
