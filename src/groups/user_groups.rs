@@ -81,6 +81,28 @@ impl UserGroups {
         
         issues
     }
+
+    pub fn needs_correction(&self, groups: &[GroupDesc]) -> bool {
+        let issues = self.validate(&groups);
+        for issue in issues {
+            match issue {
+                ValidationIssue::MissingRequiredGroup { group: _ } => return true,
+                ValidationIssue::InvalidValue { group, value: _ } => {
+                    let is_required = groups
+                        .iter()
+                        .find(|g| g.id == group)
+                        .and_then(|g| g.required_if.as_ref()
+                        .map(|rif| self.matches(rif)))
+                        .unwrap_or(false);
+                    if is_required {
+                        return true
+                    }
+                },
+                ValidationIssue::UnknownGroup { group: _ } => (),
+            }
+        }
+        false
+    }
 }
 
 impl Default for UserGroups {
