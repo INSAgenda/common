@@ -14,6 +14,10 @@ impl UserGroups {
         self.groups.insert(id, value);
     }
 
+    pub fn remove(&mut self, id: &str) {
+        self.groups.remove(id);
+    }
+
     pub fn matches(&self, filter: &GroupFilter) -> bool {
         self.matches_with_name(filter, None)
     }
