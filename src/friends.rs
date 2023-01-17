@@ -1,13 +1,13 @@
 use crate::prelude::*;
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub struct  FriendRequestIncoming {
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct FriendRequestIncoming {
     pub from: i64,
     pub date: i64,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub struct  FriendRequestOutgoing{
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct FriendRequestOutgoing{
     pub to: i64,
     pub date: i64,
 }
