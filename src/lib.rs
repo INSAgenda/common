@@ -6,4 +6,5 @@ mod password;
 mod announcements;
 mod groups;
 mod surveys;
+mod friends;
 pub use crate::prelude::*;
