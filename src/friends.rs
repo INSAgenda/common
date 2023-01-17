@@ -12,7 +12,7 @@ pub struct FriendRequestOutgoing{
     pub date: i64,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FriendsLists {
     pub friends_list: Vec<i64>,
     pub friend_requests_outgoing: Vec<FriendRequestOutgoing>,
