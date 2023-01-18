@@ -1,3 +1,4 @@
+use crate::prelude::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserDesc {
@@ -7,11 +8,12 @@ pub struct UserDesc {
 }
 
 impl UserDesc {
-    /// Creates a new UserDesc.
+    /// Creates a new UserDesc. (profile_picture is set to None)
     pub fn new(uid: i64, email: String) -> Self {
         UserDesc {
             uid,
             email,
+            profile_picture: None,
         }
     }
 
