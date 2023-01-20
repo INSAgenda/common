@@ -5,17 +5,15 @@ pub struct UserDesc {
     pub uid: i64,
     pub email: String,
     pub profile_picture: Option<String>,
-    pub user_groups: UserGroups,
 }
 
 impl UserDesc {
     /// Creates a new UserDesc. (profile_picture is set to None)
-    pub fn new(uid: i64, email: String, user_groups: UserGroups) -> Self {
+    pub fn new(uid: i64, email: String) -> Self {
         UserDesc {
             uid,
             email,
             profile_picture: None,
-            user_groups,
         }
     }
 
