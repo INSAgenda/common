@@ -13,7 +13,7 @@ pub struct FriendRequestOutgoing{
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct FriendsLists {
+pub struct FriendLists {
     pub friends: Vec<(UserDesc, UserGroups)>,
     pub outgoing: Vec<FriendRequestOutgoing>,
     pub incoming: Vec<FriendRequestIncoming>,
