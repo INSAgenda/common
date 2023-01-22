@@ -4,7 +4,7 @@ use crate::prelude::*;
 pub struct UserDesc {
     pub uid: i64,
     pub email: String,
-    pub profile_picture: Option<String>,
+    pub picture: Option<String>,
 }
 
 impl UserDesc {
@@ -13,12 +13,13 @@ impl UserDesc {
         UserDesc {
             uid,
             email,
-            profile_picture: None,
+            picture: None,
         }
     }
 
-    /// Returns the username of the user according to the email address.
-    /// example: "edouard.foobar@insa-rouen.fr -> "edouard.foobar"
+    /// Returns the username of the user based on the email address.
+    /// 
+    /// Example: "edouard.foobar@insa-rouen.fr" -> "edouard.foobar"
     pub fn get_username(&self) -> String {
         self.email.split("@").next().unwrap().to_string()
     }
