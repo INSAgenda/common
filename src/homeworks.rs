@@ -15,8 +15,10 @@ pub struct Comment {
     pub creation_ts: i64,
     /// Equal to `creation_ts` if the comment has never been edited.
     pub last_edited_ts: i64,
-    /// Number of upvotes minus number of downvotes.
-    pub score: i64,
+    /// Number of upvotes 
+    pub upvotes: i64,
+    /// Number of downvotes.
+    pub downvotes: u64,
     /// The vote of the current user.
     /// -1, 0 or 1.
     pub vote: i8,
