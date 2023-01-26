@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Comment {
     /// Random number identifying the comment.
-    pub id: u64,
+    pub cid: u64,
     /// Id of the parent comment, if any.
     pub parent: Option<u64>,
     /// Author of the comment.
