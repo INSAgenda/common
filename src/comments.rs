@@ -19,5 +19,5 @@ pub struct Comment {
     pub score: i64,
     /// The vote of the current user.
     /// -1, 0 or 1.
-    pub vote: u8,
+    pub vote: i8,
 }
