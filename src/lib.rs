@@ -1,5 +1,5 @@
 mod announcements;
-mod comments;
+mod homeworks;
 mod events;
 mod friends;
 mod groups;
