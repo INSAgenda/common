@@ -23,3 +23,12 @@ pub struct Comment {
     /// -1, 0 or 1.
     pub vote: i8,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct CommentRequest {
+    /// Id of the parent comment, if any.
+    pub parent: Option<u64>,
+    /// Content of the comment.
+    /// Markdown isn't supported but will be eventually.
+    pub content: String,
+}
