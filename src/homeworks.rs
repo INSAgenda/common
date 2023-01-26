@@ -26,6 +26,10 @@ pub struct Comment {
 
 #[derive(Serialize, Deserialize)]
 pub struct CommentRequest {
+    /// Event id
+    pub eid: String,
+    /// Random number identifying the comment.
+    pub cid: Option<u64>,
     /// Id of the parent comment, if any.
     pub parent: Option<u64>,
     /// Content of the comment.
