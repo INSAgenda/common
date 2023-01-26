@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Comment {
     /// Random number identifying the comment.
     pub id: u64,
@@ -16,7 +16,7 @@ pub struct Comment {
     /// Equal to `creation_ts` if the comment has never been edited.
     pub last_edited_ts: i64,
     /// Number of upvotes minus number of downvotes.
-    pub votes: i64,
+    pub score: i64,
     /// The vote of the current user.
     /// -1, 0 or 1.
     pub vote: u8,
