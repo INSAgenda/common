@@ -82,12 +82,14 @@ impl UserGroups {
         issues
     }
 
-    pub fn needs_correction(&self, groups: &[GroupDesc]) -> bool {
+    pub fn auto_correct(&mut self, groups: &[GroupDesc]) -> bool {
         let issues = self.validate(groups);
+        let mut needs_correction = false;
         for issue in issues {
             match issue {
-                ValidationIssue::MissingRequiredGroup { group: _ } => return true,
+                ValidationIssue::MissingRequiredGroup { group: _ } => needs_correction = true,
                 ValidationIssue::InvalidValue { group, value: _ } => {
+                    self.groups.remove(&group);
                     let is_required = groups
                         .iter()
                         .find(|g| g.id == group)
@@ -95,13 +97,15 @@ impl UserGroups {
                         .map(|rif| self.matches(rif)))
                         .unwrap_or(false);
                     if is_required {
-                        return true
+                        needs_correction = true;
                     }
                 },
-                ValidationIssue::UnknownGroup { group: _ } => (),
+                ValidationIssue::UnknownGroup { group } => {
+                    self.groups.remove(&group);
+                },
             }
         }
-        false
+        needs_correction
     }
 }
 
