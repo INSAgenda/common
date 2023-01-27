@@ -88,12 +88,10 @@ impl UserGroups {
             match issue {
                 ValidationIssue::MissingRequiredGroup { group: _ } => return true,
                 ValidationIssue::InvalidValue { group, value: _ } => {
-                    let is_required = groups
-                        .iter()
-                        .find(|g| g.id == group)
-                        .and_then(|g| g.required_if.as_ref()
-                        .map(|rif| self.matches(rif)))
-                        .unwrap_or(false);
+                    let is_required = match groups.iter().find(|g| g.id == group) {
+                        Some(g) => g.required_if.as_ref().map(|rif| self.matches(rif)).unwrap_or(true),
+                        None => false,
+                    };
                     if is_required {
                         return true
                     }
@@ -105,12 +103,20 @@ impl UserGroups {
     }
 
     pub fn sweep(&mut self, groups: &[GroupDesc]) {
-        let issues = self.validate(groups);
-        for issue in issues {
-            match issue {
-                ValidationIssue::MissingRequiredGroup { group: _ } => (),
-                ValidationIssue::InvalidValue { group, value: _ } => self.remove(&group),
-                ValidationIssue::UnknownGroup { group } => self.remove(&group),
+        let mut go_on = true;
+        while go_on {
+            go_on = false;
+            for group in &self.groups {
+                let is_required = match groups.iter().find(|g| &g.id == group.0) {
+                    Some(g) => g.required_if.as_ref().map(|rif| self.matches(rif)).unwrap_or(true),
+                    None => false,
+                };
+                if !is_required {
+                    let id = group.0.clone();
+                    self.remove(&id);
+                    go_on = true;
+                    break;
+                }
             }
         }
     }
