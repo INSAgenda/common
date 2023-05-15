@@ -29,9 +29,9 @@ pub struct CommentRequest {
     /// Event id
     pub eid: String,
     /// Random number identifying the comment.
-    pub cid: Option<u64>,
+    pub cid: Option<i64>,
     /// Id of the parent comment, if any.
-    pub parent: Option<u64>,
+    pub parent: Option<i64>,
     /// Content of the comment.
     /// Markdown isn't supported but will be eventually.
     pub content: String,
