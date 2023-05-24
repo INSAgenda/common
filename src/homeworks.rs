@@ -24,7 +24,7 @@ pub struct Comment {
     pub vote: i8,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CommentRequest {
     /// Event id
     pub eid: String,
