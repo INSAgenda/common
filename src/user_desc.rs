@@ -21,6 +21,6 @@ impl UserDesc {
     /// 
     /// Example: "edouard.foobar@insa-rouen.fr" -> "edouard.foobar"
     pub fn get_username(&self) -> String {
-        self.email.split("@").next().unwrap().to_string()
+        self.email.split('@').next().unwrap().to_string()
     }
 }

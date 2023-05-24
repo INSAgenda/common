@@ -1,4 +1,4 @@
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum GroupFilter {
     Is { id: String, value: String },
     All(Vec<GroupFilter>),

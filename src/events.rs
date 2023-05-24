@@ -17,4 +17,6 @@ pub struct Event {
     pub location: Option<Location>,
     pub start_unixtime: u64,
     pub end_unixtime: u64,
+    #[serde(default)]
+    pub eid: String,
 }

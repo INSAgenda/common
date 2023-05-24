@@ -16,4 +16,6 @@ pub struct UserInfo {
     /// has password
     #[serde(default)]
     pub has_password: bool,
+    /// Uid
+    pub uid: i64,
 }
