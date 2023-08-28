@@ -10,7 +10,7 @@ pub struct UserInfo {
     /// The email associated with its verification state
     pub email: (String, bool),
     /// Which group the user is in
-    pub user_groups: Groups,
+    pub groups: Groups,
     /// Last colors modification timestamp.
     pub last_colors_mod: i64,
     /// has password
