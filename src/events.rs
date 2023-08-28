@@ -13,7 +13,7 @@ pub struct Event {
     pub kind: Option<EventKind>,
     pub number: Option<u8>,
     pub teachers: Vec<String>,
-    pub group: GroupFilter,
+    pub group: String,
     pub location: Option<Location>,
     pub start_unixtime: u64,
     pub end_unixtime: u64,

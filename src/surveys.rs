@@ -24,7 +24,7 @@ pub struct Survey {
     pub questions: Vec<SurveyQuestion>,
     pub start_ts: i64,
     pub end_ts: i64,
-    pub target: GroupFilter,
+    pub target: Groups,
     pub required: bool,
     pub author: i64,
 }
@@ -85,7 +85,7 @@ impl Survey {
                 .unwrap()
                 .as_secs() as i64
                 + 10000000000,
-                target: GroupFilter::Is { id: "school".to_owned(), value: "insa-rouen".to_owned() },
+            target: Groups::from(vec![String::from("etudiants")]),
             required: false,
             author: 0,
         }
