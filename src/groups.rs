@@ -7,7 +7,7 @@ pub struct Groups {
 
 impl Groups {
     pub fn new_with_groups(groups: Vec<String>) -> Groups {
-        Groups { groups: groups.into_iter().collect() }
+        Groups { groups: groups.into_iter().map(|g| g.to_lowercase()).collect() }
     }
 
     pub fn insert(&mut self, group: String) {
@@ -32,7 +32,7 @@ impl Groups {
             if group.is_empty() {
                 continue;
             }
-            groups.insert(group.to_string());
+            groups.insert(group.to_lowercase());
         }
         Ok(Groups { groups })
     }
@@ -66,16 +66,15 @@ impl From<Vec<String>> for Groups {
 
 impl Serialize for Groups {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let mut groups = self.groups.iter().collect::<Vec<_>>();
-        groups.sort();
-        groups.serialize(serializer)
+        let groups = self.format_to_string();
+        serializer.serialize_str(&groups)
     }
 }
 
 impl<'de> Deserialize<'de> for Groups {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let groups = Vec::<String>::deserialize(deserializer)?;
-        Ok(Groups { groups: groups.into_iter().collect() })
+        let groups = String::deserialize(deserializer)?;
+        Groups::read_from_string(&groups).map_err(serde::de::Error::custom)
     }
 }
 
