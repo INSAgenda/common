@@ -26,6 +26,23 @@ impl Groups {
         self.matches(another)
     }
 
+    pub fn read_from_string(s: &str) -> Result<Groups, String> {
+        let mut groups = HashSet::new();
+        for group in s.split('+') {
+            if group.is_empty() {
+                continue;
+            }
+            groups.insert(group.to_string());
+        }
+        Ok(Groups { groups })
+    }
+
+    pub fn format_to_string(&self) -> String {
+        let mut groups = self.groups.iter().cloned().collect::<Vec<_>>();
+        groups.sort();
+        groups.join("+")
+    }
+
     pub fn groups(&self) -> &HashSet<String> {
         &self.groups
     }
