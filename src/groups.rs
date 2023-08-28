@@ -78,3 +78,10 @@ impl<'de> Deserialize<'de> for Groups {
         Ok(Groups { groups: groups.into_iter().collect() })
     }
 }
+
+impl std::hash::Hash for Groups {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        let groups = self.format_to_string();
+        groups.hash(state);
+    }
+}
