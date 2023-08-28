@@ -72,6 +72,12 @@ impl Default for UserGroups {
     }
 }
 
+impl From<Vec<String>> for UserGroups {
+    fn from(groups: Vec<String>) -> Self {
+        UserGroups { groups: groups.into_iter().collect() }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub enum ValidationIssue {
     MissingRequiredGroup { group: String },
