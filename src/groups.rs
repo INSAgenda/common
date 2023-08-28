@@ -18,12 +18,12 @@ impl Groups {
         self.groups.remove(group);
     }
 
-    pub fn matches(&self, group: String) -> bool {
-        self.groups.contains(&group)
+    pub fn matches(&self, another: &Groups) -> bool {
+        self.groups.iter().any(|g| another.groups.contains(g))
     }
 
-    pub fn matches_with_name(&self, group: String, _name: Option<&str>) -> bool {
-        self.matches(group)
+    pub fn matches_with_name(&self, another: &Groups, _name: Option<&str>) -> bool {
+        self.matches(another)
     }
 
     pub fn groups(&self) -> &HashSet<String> {
