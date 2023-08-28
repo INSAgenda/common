@@ -1,21 +1,21 @@
 use crate::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct UserGroups {
-    pub(crate) groups: BTreeMap<String, String>,
+    pub(crate) groups: HashSet<String>,
 }
 
 impl UserGroups {
-    pub fn new_with_groups(groups: BTreeMap<String, String>) -> UserGroups {
-        UserGroups { groups }
+    pub fn new_with_groups(groups: Vec<String>) -> UserGroups {
+        UserGroups { groups: groups.into_iter().collect() }
     }
 
-    pub fn insert(&mut self, id: String, value: String) {
-        self.groups.insert(id, value);
+    pub fn insert(&mut self, group: String) {
+        self.groups.insert(group);
     }
 
-    pub fn remove(&mut self, id: &str) {
-        self.groups.remove(id);
+    pub fn remove(&mut self, group: &str) {
+        self.groups.remove(group);
     }
 
     pub fn matches(&self, filter: &GroupFilter) -> bool {
@@ -57,68 +57,8 @@ impl UserGroups {
         }
     }
 
-    pub fn groups(&self) -> &BTreeMap<String, String> {
+    pub fn groups(&self) -> &HashSet<String> {
         &self.groups
-    }
-
-    pub fn validate(&self, groups: &[GroupDesc]) -> Vec<ValidationIssue> {
-        let mut issues = Vec::new();
-        for group in groups {
-            if group.required_if.as_ref().map(|ri| self.matches(ri)).unwrap_or(true) && !self.groups.contains_key(&group.id) {
-                issues.push(ValidationIssue::MissingRequiredGroup { group: group.id.clone() });
-            }
-            if let Some(value) = self.groups.get(&group.id) {
-                if !group.values.iter().any(|(v,_)| v==value) {
-                    issues.push(ValidationIssue::InvalidValue { group: group.id.clone(), value: value.clone() });
-                }
-            }
-        }
-        for group in self.groups.keys() {
-            if !groups.iter().any(|g| &g.id == group) {
-                issues.push(ValidationIssue::UnknownGroup { group: group.clone() });
-            }
-        }
-        
-        issues
-    }
-
-    pub fn needs_correction(&self, groups: &[GroupDesc]) -> bool {
-        let issues = self.validate(groups);
-        for issue in issues {
-            match issue {
-                ValidationIssue::MissingRequiredGroup { group: _ } => return true,
-                ValidationIssue::InvalidValue { group, value: _ } => {
-                    let is_required = match groups.iter().find(|g| g.id == group) {
-                        Some(g) => g.required_if.as_ref().map(|rif| self.matches(rif)).unwrap_or(true),
-                        None => false,
-                    };
-                    if is_required {
-                        return true
-                    }
-                },
-                ValidationIssue::UnknownGroup { group: _ } => (),
-            }
-        }
-        false
-    }
-
-    pub fn sweep(&mut self, groups: &[GroupDesc]) {
-        let mut go_on = true;
-        while go_on {
-            go_on = false;
-            for group in &self.groups {
-                let is_required = match groups.iter().find(|g| &g.id == group.0) {
-                    Some(g) => g.required_if.as_ref().map(|rif| self.matches(rif)).unwrap_or(true),
-                    None => false,
-                };
-                if !is_required {
-                    let id = group.0.clone();
-                    self.remove(&id);
-                    go_on = true;
-                    break;
-                }
-            }
-        }
     }
 }
 
@@ -126,12 +66,8 @@ impl Default for UserGroups {
     fn default() -> Self {
         UserGroups {
             groups: [
-                (String::from("school"), String::from("insa-rouen")),
-                (String::from("insa-rouen:department"), String::from("STPI1")),
-                (String::from("insa-rouen:language"), String::from("ESP")),
-                (String::from("insa-rouen:stpi:class"), String::from("A")),
-                (String::from("insa-rouen:stpi:tp-group"), String::from("1")),
-            ].iter().cloned().collect(),
+                "iti3", "stpi2-precedent" , "stpi22-p9-td-01" , "ad-etudiants", "h-22-ang-cult-stpi-gg-01", "h-22-ang-cult-stpi-pg-02", "etudiants", "h-22-com-stpi-08", "stpi21-tp-a1", "stpi22-i4-td-01", "stpi21-all-td-a-j-k", "stpi22-i3-td-01"
+            ].iter().map(|g| g.to_string()).collect(),
         }
     }
 }

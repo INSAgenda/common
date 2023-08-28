@@ -51,30 +51,16 @@ impl GroupFilter {
 
 impl UserGroups {
     pub fn format_to_string(&self) -> String {
-        self.groups.iter().map(|(k, v)| format!("{}={}", k, v)).collect::<Vec<_>>().join("+")
+        self.groups.iter().cloned().collect::<Vec<_>>().join("+")
     }
 
-    // school=insa-rouen+insa-rouen:department=STPI1+insa-rouen:language=ESP+insa-rouen:stpi:class=A+insa-rouen:stpi:tp-group=1
-    // school=insa-rouen+insa-rouen:department=ITI3+insa-rouen:language=ESP+insa-rouen:iti:group=1+insa-rouen:lv1-group=1+insa-rouen:lv2-group=1
     pub fn read_from_string(s: &str) -> Result<UserGroups, String> {
-        let mut groups = BTreeMap::new();
+        let mut groups = HashSet::new();
         for part in s.trim().split('+') {
             if part.is_empty() {
                 continue;
             }
-            let mut parts = part.split('=');
-            let key = parts.next().ok_or_else(|| format!("invalid group descriptor (missing key): {s}"))?;
-            let value = parts.next().ok_or_else(|| format!("invalid group descriptor (missing value): {s}"))?;
-            if parts.next().is_some() {
-                return Err(format!("invalid group descriptor (too many parts): {s}"));
-            }
-            if key.is_empty() || key.chars().any(|c| !c.is_ascii_alphanumeric() && c != ':' && c != '_' && c != '-') {
-                return Err(format!("invalid group descriptor (invalid key): {key:?}"));
-            }
-            if value.is_empty() {
-                return Err(format!("invalid group descriptor (invalid value): {value:?}"));
-            }
-            groups.insert(key.to_string(), value.to_string());
+            groups.insert(part.to_string());
         }
         Ok(UserGroups { groups })
     }
