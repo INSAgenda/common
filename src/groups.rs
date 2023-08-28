@@ -6,16 +6,20 @@ pub struct Groups {
 }
 
 impl Groups {
+    pub fn new() -> Groups {
+        Groups { groups: HashSet::new() }
+    }
+
     pub fn new_with_groups(groups: Vec<String>) -> Groups {
         Groups { groups: groups.into_iter().map(|g| g.to_lowercase()).collect() }
     }
 
-    pub fn insert(&mut self, group: String) {
-        self.groups.insert(group);
+    pub fn insert(&mut self, group: &str) {
+        self.groups.insert(group.to_lowercase());
     }
 
     pub fn remove(&mut self, group: &str) {
-        self.groups.remove(group);
+        self.groups.remove(&group.to_lowercase());
     }
 
     pub fn matches(&self, another: &Groups) -> bool {
