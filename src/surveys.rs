@@ -85,7 +85,7 @@ impl Survey {
                 .unwrap()
                 .as_secs() as i64
                 + 10000000000,
-            targets: Groups::from(vec![String::from("etudiants")]),
+            targets: Groups::new_with_groups(vec![String::from("etudiants")]),
             required: false,
             author: 0,
         }

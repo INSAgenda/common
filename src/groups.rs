@@ -62,12 +62,6 @@ impl Default for Groups {
     }
 }
 
-impl From<Vec<String>> for Groups {
-    fn from(groups: Vec<String>) -> Self {
-        Groups { groups: groups.into_iter().collect() }
-    }
-}
-
 impl Serialize for Groups {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let groups = self.format_to_string();
