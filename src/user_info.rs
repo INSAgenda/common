@@ -15,6 +15,8 @@ pub struct UserInfo {
     pub official_groups: Groups,
     /// Which groups the user could be in
     pub available_groups: Groups,
+    /// Events that shouldn't be displayed
+    pub hidden_events: HashSet<String>,
     /// Last colors modification timestamp.
     pub last_colors_mod: i64,
     /// has password
