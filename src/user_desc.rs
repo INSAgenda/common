@@ -23,4 +23,8 @@ impl UserDesc {
     pub fn get_username(&self) -> String {
         self.email.split('@').next().unwrap().to_string()
     }
+
+    pub fn get_mastodon_username(&self) -> String {
+        self.get_username().replace(".", "_")
+    }
 }
