@@ -25,6 +25,20 @@ impl UserDesc {
     }
 
     pub fn get_mastodon_username(&self) -> String {
-        self.get_username().replace(".", "_")
+        self.get_username().replace('.', "_")
+    }
+
+    pub fn as_username(&self) -> &str {
+        self.email.split('@').next().unwrap()
+    }
+
+    pub fn is_admin(&self) -> bool {
+        const ADMINS: &[&str] = &["dimitri.timoz", "simon.girard"];
+        ADMINS.contains(&self.as_username())
+    }
+
+    pub fn is_contributor(&self) -> bool {
+        const CONTRIBUTORS: &[&str] = &["dimitri.timoz", "simon.girard", "alix.anneraud", "juline.emond"];
+        CONTRIBUTORS.contains(&self.as_username())
     }
 }
